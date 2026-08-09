@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load form_tags %}
+{% block title %}Вхід{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-5">
+    <h2 class="mb-4">Вхід на портал</h2>
+    <form method="post">
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="mb-3">
+          <label class="form-label">{{ field.label }}</label>
+          {{ field.errors }}
+          {{ field|add_class:"form-control" }}
+        </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-primary w-100">Увійти</button>
+    </form>
+    <p class="mt-3">Немає акаунту? <a href="{% url 'accounts:register' %}">Зареєструватися</a></p>
+  </div>
+</div>
+{% endblock %}

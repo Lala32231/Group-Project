@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% block title %}Головна — Портал групи{% endblock %}
+
+{% block content %}
+<div class="hero-panel mb-5">
+    <h1 class="display-6">{{ site_settings.site_title }}</h1>
+    <p class="col-md-8 text-muted">Новини, форум, події, опитування, оголошення, портфоліо та галерея — все в одному місці.</p>
+    {% if not user.is_authenticated %}
+        <a class="btn btn-accent btn-lg me-2" href="{% url 'accounts:register' %}">Реєстрація</a>
+        <a class="btn btn-ghost btn-lg" href="{% url 'accounts:login' %}">Увійти</a>
+    {% endif %}
+</div>
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card widget-card">
+            <div class="card-header d-flex justify-content-between">
+                Новини
+                <a href="{% url 'news:list' %}" class="small">усі →</a>
+            </div>
+            <div class="card-body">
+                {% for n in news_items %}
+                    <div class="mb-2 pb-2 {% if not forloop.last %}border-bottom{% endif %}">
+                        <a href="{{ n.get_absolute_url }}">{{ n.title }}</a>
+                        <div class="text-muted small">{{ n.created_at|date:"d.m.Y" }}</div>
+                    </div>
+                {% empty %}
+                    <p class="text-muted mb-0">Новин поки немає.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card widget-card">
+            <div class="card-header d-flex justify-content-between">
+                Найближчі події
+                <a href="{% url 'events:list' %}" class="small">усі →</a>
+            </div>
+            <div class="card-body">
+                {% for e in events %}
+                    <div class="mb-2 pb-2 {% if not forloop.last %}border-bottom{% endif %}">
+                        <a href="{{ e.get_absolute_url }}">{{ e.title }}</a>
+                        <div class="text-muted small">{{ e.date|date:"d.m.Y H:i" }}{% if e.location %} · {{ e.location }}{% endif %}</div>
+                    </div>
+                {% empty %}
+                    <p class="text-muted mb-0">Подій не заплановано.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card widget-card">
+            <div class="card-header d-flex justify-content-between">
+                Оголошення
+                <a href="{% url 'announcements:list' %}" class="small">усі →</a>
+            </div>
+            <div class="card-body">
+                {% for a in announcements %}
+                    <div class="mb-2 pb-2 {% if not forloop.last %}border-bottom{% endif %}">
+                        <a href="{{ a.get_absolute_url }}">{{ a.title }}</a>
+                        {% if a.priority == 'urgent' %}<span class="badge bg-danger">Термінове</span>{% elif a.priority == 'important' %}<span class="badge bg-warning text-dark">Важливе</span>{% endif %}
+                    </div>
+                {% empty %}
+                    <p class="text-muted mb-0">Оголошень немає.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card widget-card">
+            <div class="card-header d-flex justify-content-between">
+                Форум — активні теми
+                <a href="{% url 'forum:topic_list' %}" class="small">усі →</a>
+            </div>
+            <div class="card-body">
+                {% for t in topics %}
+                    <div class="mb-2 pb-2 {% if not forloop.last %}border-bottom{% endif %}">
+                        <a href="{{ t.get_absolute_url }}">{{ t.title }}</a>
+                        <span class="text-muted small">({{ t.posts_count }} повідомлень)</span>
+                    </div>
+                {% empty %}
+                    <p class="text-muted mb-0">Тем поки немає.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card widget-card">
+            <div class="card-header d-flex justify-content-between">
+                Опитування
+                <a href="{% url 'polls_app:list' %}" class="small">усі →</a>
+            </div>
+            <div class="card-body">
+                {% for p in polls %}
+                    <div class="mb-2 pb-2 {% if not forloop.last %}border-bottom{% endif %}">
+                        <a href="{{ p.get_absolute_url }}">{{ p.question }}</a>
+                    </div>
+                {% empty %}
+                    <p class="text-muted mb-0">Активних опитувань немає.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card widget-card">
+            <div class="card-header d-flex justify-content-between">
+                Галерея
+                <a href="{% url 'gallery:list' %}" class="small">усі →</a>
+            </div>
+            <div class="card-body">
+                {% for al in albums %}
+                    <div class="mb-2 pb-2 {% if not forloop.last %}border-bottom{% endif %}">
+                        <a href="{{ al.get_absolute_url }}">{{ al.title }}</a>
+                        <span class="text-muted small">({{ al.photos.count }} фото)</span>
+                    </div>
+                {% empty %}
+                    <p class="text-muted mb-0">Альбомів поки немає.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

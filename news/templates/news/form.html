@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load form_tags %}
+{% block title %}Новина{% endblock %}
+{% block content %}
+<h2 class="mb-4">{% if object %}Редагування новини{% else %}Нова новина{% endif %}</h2>
+<form method="post" enctype="multipart/form-data" class="col-md-8">
+  {% csrf_token %}
+  {% for field in form %}
+    <div class="mb-3">
+      <label class="form-label">{{ field.label }}</label>
+      {{ field.errors }}
+      {{ field|add_class:"form-control" }}
+    </div>
+  {% endfor %}
+  <button type="submit" class="btn btn-primary">Зберегти</button>
+</form>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load form_tags %}
+{% block content %}
+<h2 class="mb-4">{% if object %}Редагування роботи{% else %}Нова робота{% endif %}</h2>
+<form method="post" enctype="multipart/form-data" class="col-md-8">
+  {% csrf_token %}
+  {% for field in form %}
+    <div class="mb-3">
+      <label class="form-label">{{ field.label }}</label>
+      {{ field|add_class:"form-control" }}
+    </div>
+  {% endfor %}
+  <button type="submit" class="btn btn-primary">Зберегти</button>
+</form>
+{% endblock %}

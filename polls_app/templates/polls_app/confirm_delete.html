@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Видалити опитування "{{ object.question }}"?</h2>
+<form method="post">{% csrf_token %}
+  <button type="submit" class="btn btn-danger">Так, видалити</button>
+  <a href="{% url 'polls_app:list' %}" class="btn btn-secondary">Скасувати</a>
+</form>
+{% endblock %}

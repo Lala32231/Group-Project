@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}{{ item.title }}{% endblock %}
+{% block content %}
+<article>
+  <h2>{{ item.title }}</h2>
+  <p class="text-muted">{{ item.author }} · {{ item.created_at|date:"d.m.Y H:i" }}</p>
+  {% if item.image %}<img src="{{ item.image.url }}" class="img-fluid rounded mb-3">{% endif %}
+  <p style="white-space: pre-line;">{{ item.content }}</p>
+  {% if user.is_authenticated and user.is_moderator %}
+    <a href="{% url 'news:edit' item.pk %}" class="btn btn-outline-secondary btn-sm">Редагувати</a>
+    <a href="{% url 'news:delete' item.pk %}" class="btn btn-outline-danger btn-sm">Видалити</a>
+  {% endif %}
+</article>
+<a href="{% url 'news:list' %}" class="d-inline-block mt-3">&larr; До списку новин</a>
+{% endblock %}

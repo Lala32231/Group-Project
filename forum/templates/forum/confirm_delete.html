@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Видалення теми{% endblock %}
+{% block content %}
+<h2>Видалити тему "{{ object.title }}"?</h2>
+<form method="post">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-danger">Так, видалити</button>
+  <a href="{% url 'forum:topic_list' %}" class="btn btn-secondary">Скасувати</a>
+</form>
+{% endblock %}

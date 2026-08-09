@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}{{ poll.question }}{% endblock %}
+{% block content %}
+<h2>{{ poll.question }}</h2>
+<p class="text-muted">Усього голосів: {{ poll.total_votes }}</p>
+
+{% if has_voted or not poll.is_active %}
+  <div class="list-group mb-3">
+    {% for opt in poll.options.all %}
+      <div class="list-group-item">
+        <div class="d-flex justify-content-between">
+          <span>{{ opt.text }}</span>
+          <span>{{ opt.percentage }}% ({{ opt.votes }})</span>
+        </div>
+        <div class="progress mt-1" style="height:6px;">
+          <div class="progress-bar" style="width: {{ opt.percentage }}%;"></div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  {% if has_voted %}<p class="text-success">Дякуємо, ваш голос враховано.</p>{% endif %}
+{% else %}
+  <form method="post" action="{% url 'polls_app:vote' poll.pk %}">
+    {% csrf_token %}
+    {% for opt in poll.options.all %}
+      <div class="form-check mb-2">
+        <input class="form-check-input" type="radio" name="option" value="{{ opt.pk }}" id="opt{{ opt.pk }}" required>
+        <label class="form-check-label" for="opt{{ opt.pk }}">{{ opt.text }}</label>
+      </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary mt-2">Проголосувати</button>
+  </form>
+{% endif %}
+
+{% if user.is_authenticated and user.is_moderator %}
+  <a href="{% url 'polls_app:delete' poll.pk %}" class="btn btn-outline-danger btn-sm mt-3">Видалити опитування</a>
+{% endif %}
+{% endblock %}

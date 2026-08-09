@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>{{ item.title }}</h2>
+<p class="text-muted">{{ item.author }} · {{ item.created_at|date:"d.m.Y H:i" }}</p>
+<p style="white-space: pre-line;">{{ item.content }}</p>
+{% if user.is_authenticated and user.is_moderator %}
+  <a href="{% url 'announcements:edit' item.pk %}" class="btn btn-outline-secondary btn-sm">Редагувати</a>
+  <a href="{% url 'announcements:delete' item.pk %}" class="btn btn-outline-danger btn-sm">Видалити</a>
+{% endif %}
+<div><a href="{% url 'announcements:list' %}">&larr; До оголошень</a></div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load form_tags %}
+{% block title %}Зміна ролі{% endblock %}
+{% block content %}
+<h2 class="mb-4">Зміна ролі: {{ object.username }}</h2>
+<form method="post" class="col-md-4">
+  {% csrf_token %}
+  {% for field in form %}
+    <div class="mb-3">
+      <label class="form-label">{{ field.label }}</label>
+      {{ field|add_class:"form-control" }}
+    </div>
+  {% endfor %}
+  <button type="submit" class="btn btn-primary">Зберегти</button>
+  <a href="{% url 'accounts:user_list' %}" class="btn btn-secondary">Скасувати</a>
+</form>
+{% endblock %}

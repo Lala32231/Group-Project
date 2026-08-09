@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>{{ item.title }}</h2>
+<p class="text-muted">Автор: {{ item.owner }} · {{ item.created_at|date:"d.m.Y" }}</p>
+<p style="white-space: pre-line;">{{ item.description }}</p>
+{% if item.file %}<p><a href="{{ item.file.url }}" target="_blank">Завантажити файл</a></p>{% endif %}
+{% if item.link %}<p><a href="{{ item.link }}" target="_blank">{{ item.link }}</a></p>{% endif %}
+{% if user == item.owner %}
+  <a href="{% url 'portfolio:edit' item.pk %}" class="btn btn-outline-secondary btn-sm">Редагувати</a>
+  <a href="{% url 'portfolio:delete' item.pk %}" class="btn btn-outline-danger btn-sm">Видалити</a>
+{% endif %}
+<div><a href="{% url 'portfolio:list' %}">&larr; До портфоліо</a></div>
+{% endblock %}

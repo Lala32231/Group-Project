@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Користувачі{% endblock %}
+{% block content %}
+<h2 class="mb-4">Управління користувачами</h2>
+<table class="table table-striped">
+  <thead><tr><th>Логін</th><th>Ім'я</th><th>Email</th><th>Роль</th><th></th></tr></thead>
+  <tbody>
+    {% for u in users %}
+    <tr>
+      <td><a href="{% url 'accounts:profile_detail' u.pk %}">{{ u.username }}</a></td>
+      <td>{{ u.get_full_name }}</td>
+      <td>{{ u.email }}</td>
+      <td><span class="badge bg-secondary">{{ u.get_role_display }}</span></td>
+      <td><a href="{% url 'accounts:role_change' u.pk %}" class="btn btn-sm btn-outline-primary">Змінити роль</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% include 'partials/pagination.html' %}
+{% endblock %}

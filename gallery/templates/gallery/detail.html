@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}{{ album.title }}{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2>{{ album.title }}</h2>
+  {% if user.is_authenticated and user.is_moderator %}
+    <a href="{% url 'gallery:add_photo' album.pk %}" class="btn btn-outline-primary btn-sm">+ Додати фото</a>
+    <a href="{% url 'gallery:delete' album.pk %}" class="btn btn-outline-danger btn-sm">Видалити альбом</a>
+  {% endif %}
+</div>
+<div class="row g-3">
+  {% for photo in album.photos.all %}
+    <div class="col-md-3 gallery-thumb">
+      <img src="{{ photo.image.url }}" alt="{{ photo.caption }}">
+      {% if photo.caption %}<p class="small text-muted mt-1">{{ photo.caption }}</p>{% endif %}
+    </div>
+  {% empty %}<p class="text-muted">Фото ще немає.</p>{% endfor %}
+</div>
+{% endblock %}

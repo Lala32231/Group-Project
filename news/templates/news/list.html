@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Новини{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2>Новини групи</h2>
+  {% if user.is_authenticated and user.is_moderator %}
+    <a href="{% url 'news:create' %}" class="btn btn-primary">+ Додати новину</a>
+  {% endif %}
+</div>
+<div class="row g-4">
+  {% for n in news_items %}
+    <div class="col-md-6">
+      <div class="card h-100">
+        {% if n.image %}<img src="{{ n.image.url }}" class="card-img-top" style="height:200px;object-fit:cover;">{% endif %}
+        <div class="card-body">
+          <h5 class="card-title"><a href="{{ n.get_absolute_url }}">{{ n.title }}</a></h5>
+          <p class="text-muted small">{{ n.author }} · {{ n.created_at|date:"d.m.Y H:i" }}</p>
+          <p class="card-text">{{ n.content|truncatewords:25 }}</p>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <p class="text-muted">Новин поки немає.</p>
+  {% endfor %}
+</div>
+{% include 'partials/pagination.html' %}
+{% endblock %}
